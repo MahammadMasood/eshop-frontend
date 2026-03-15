@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Cart</title>
+    <link rel="icon" href="/static/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header-top">
+          <div class="brand">
+            <img class="logo" src="/static/logo.svg" alt="Shop Fashion" />
+            <div class="brand-mark">S</div>
+            <span>Shop Fashion</span>
+          </div>
+          <div class="main-nav">
+            <div class="nav-links">
+              <a href="./index.html" class="nav-link">Home</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="section">
+          <div class="section-header">
+            <div>
+              <h1 class="section-title">Your cart</h1>
+              <p class="section-subtitle">Review your items before checkout.</p>
+            </div>
+          </div>
+          <div class="stack-lg">
+            <table>
+              <thead>
+                <tr>
+                  <th style="width: 40%">Item</th>
+                  <th>Qty</th>
+                  <th>Price</th>
+                  <th>Subtotal</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="cart-body"></tbody>
+            </table>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+              <div id="total" class="footer-title"></div>
+              <a class="btn" href="./checkout.html">Proceed to checkout</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <div>
+            <div class="footer-title">Shop Fashion</div>
+            <p class="text-muted">Cart summary.</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© <span id="year"></span> Shop Fashion</span>
+          <span>Demo storefront</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const API_BASE = `${window.location.origin}/api`;
+
+      async function loadCart() {
+        const res = await fetch(`${API_BASE}/cart/`, { credentials: "include" });
+        const data = await res.json();
+        const body = document.getElementById("cart-body");
+        body.innerHTML = "";
+
+        if (!data.items || data.items.length === 0) {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="5" class="text-muted">Your cart is empty.</td>`;
+          body.appendChild(row);
+        } else {
+          data.items.forEach((item) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${item.name}</td>
+              <td>
+                <input type="number" min="1" value="${item.quantity}" style="width:60px"
+                  onchange="updateQty(${item.product_id}, this.value)">
+              </td>
+              <td>$${item.price.toFixed(2)}</td>
+              <td>$${item.subtotal.toFixed(2)}</td>
+              <td><button class="btn btn-danger" type="button" onclick="removeItem(${item.product_id})">Remove</button></td>
+            `;
+            body.appendChild(row);
+          });
+        }
+
+        document.getElementById("total").innerText = `Total: $${data.total.toFixed(2)}`;
+      }
+
+      async function updateQty(id, qty) {
+        await fetch(`${API_BASE}/cart/`, {
+          method: "PATCH",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ product_id: id, quantity: Number(qty) }),
+        });
+        loadCart();
+      }
+
+      async function removeItem(id) {
+        await fetch(`${API_BASE}/cart/`, {
+          method: "DELETE",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ product_id: id }),
+        });
+        loadCart();
+      }
+
+      window.addEventListener("load", () => {
+        const yearSpan = document.getElementById("year");
+        if (yearSpan) {
+          yearSpan.textContent = new Date().getFullYear().toString();
+        }
+        loadCart();
+      });
+    </script>
+  </body>
+</html>
+

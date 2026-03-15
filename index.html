@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Shop | Home</title>
+    <link rel="icon" href="/static/logo.svg" type="image/svg+xml" />
+    <!-- Use Django static path so styles load correctly when served by Django -->
+    <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="header-top">
+                <div class="brand">
+                    <img class="logo" src="/static/logo.svg" alt="Shop Fashion" />
+                    <div class="brand-mark">S</div>
+                    <span>Shop Fashion</span>
+                </div>
+                <div class="main-nav">
+                    <div class="nav-links">
+                        <a href="./index.html" class="nav-link">Home</a>
+                        <a href="#section-men" class="nav-link">Men</a>
+                        <a href="#section-women" class="nav-link">Women</a>
+                        <a href="#section-kids" class="nav-link">Kids</a>
+                        <a href="#section-accessories" class="nav-link">Accessories</a>
+                        <a href="#section-sale" class="nav-link">Sale</a>
+                    </div>
+                    <div class="nav-actions">
+                        <button class="nav-icon-btn" onclick="redirectToAdmin()">
+                            <span>Admin</span>
+                        </button>
+                        <button class="nav-icon-btn" onclick="logout()">
+                            <span>Logout</span>
+                        </button>
+                        <button class="nav-icon-btn" onclick="window.location.href='./cart.html'">
+                            <span>Cart</span>
+                            <span id="cart-count" class="nav-badge" style="display:none;">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="header-search-row">
+                <div class="search-bar">
+                    <input
+                        id="search-input"
+                        class="search-input"
+                        type="search"
+                        placeholder="Search for shirts, jeans, dresses..."
+                    />
+                    <button class="btn search-button" type="button" onclick="handleSearch()">Search</button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="container hero-inner">
+                    <div>
+                        <div class="hero-eyebrow">
+                            <span>Season Sale</span>
+                            <span>Up to 40% off</span>
+                        </div>
+                        <h1 class="hero-title">Discover your next favorite look.</h1>
+                        <p class="hero-subtitle">
+                            Curated styles for every occasion. Shop handpicked collections for Men, Women, and Kids with fast
+                            delivery and easy returns.
+                        </p>
+                        <div class="hero-cta-row">
+                            <button class="btn" type="button" onclick="scrollToSection('section-new')">Shop New Arrivals</button>
+                            <button class="btn btn-outline" type="button" onclick="scrollToSection('section-trending')">
+                                View Trending
+                            </button>
+                        </div>
+                        <div class="hero-meta">
+                            <span>✓ Secure checkout</span>
+                            <span>✓ Easy returns</span>
+                            <span>✓ Fast delivery</span>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="hero-image-overlay"></div>
+                        <div class="hero-image-content">
+                            <div>
+                                <div class="hero-tagline">“Style made simple. Basics and statement pieces that just work.”</div>
+                            </div>
+                            <div class="hero-badge-grid">
+                                <span class="badge badge-sale">Limited-time offers</span>
+                                <span class="badge badge-new">Fresh arrivals every week</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-categories" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Shop by category</h2>
+                            <p class="section-subtitle">Discover curated edits for everyone.</p>
+                        </div>
+                    </div>
+                    <div class="category-grid">
+                        <article id="section-men" class="category-card" onclick="scrollToSection('section-trending')">
+                            <div class="category-label">Men</div>
+                            <div class="category-meta">Essentials, denim, outerwear</div>
+                        </article>
+                        <article id="section-women" class="category-card" onclick="scrollToSection('section-trending')">
+                            <div class="category-label">Women</div>
+                            <div class="category-meta">Dresses, tops, co-ords</div>
+                        </article>
+                        <article id="section-kids" class="category-card" onclick="scrollToSection('section-trending')">
+                            <div class="category-label">Kids</div>
+                            <div class="category-meta">Play-ready outfits</div>
+                        </article>
+                        <article id="section-accessories" class="category-card" onclick="scrollToSection('section-trending')">
+                            <div class="category-label">Accessories</div>
+                            <div class="category-meta">Bags, belts, caps & more</div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-trending" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Trending now</h2>
+                            <p class="section-subtitle">Most loved pieces from our customers.</p>
+                        </div>
+                    </div>
+                    <div id="products" class="product-grid"></div>
+                </div>
+            </section>
+
+            <section id="section-new" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">New arrivals</h2>
+                            <p class="section-subtitle">Fresh drops just landed.</p>
+                        </div>
+                    </div>
+                    <div class="section-banner">
+                        <div class="section-banner-text">
+                            <div class="section-banner-title">Be first to new styles</div>
+                            <div class="text-muted">New arrivals will appear here as you expand your catalog.</div>
+                        </div>
+                        <button class="btn btn-outline" type="button" onclick="scrollToSection('section-trending')">
+                            Browse all products
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-sale" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Limited-time offers</h2>
+                            <p class="section-subtitle">Seasonal deals and special prices.</p>
+                        </div>
+                    </div>
+                    <div class="section-banner">
+                        <div class="section-banner-text">
+                            <div class="section-banner-title">Weekend flash sale</div>
+                            <div class="text-muted">Configure discounts and sale products in the admin to make this section dynamic.</div>
+                        </div>
+                        <button class="btn" type="button">Shop sale</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-newsletter" class="section">
+                <div class="container">
+                    <div class="section-header">
+                        <div>
+                            <h2 class="section-title">Stay in style</h2>
+                            <p class="section-subtitle">Be the first to know about new drops and exclusive offers.</p>
+                        </div>
+                    </div>
+                    <div class="section-banner">
+                        <div class="stack-sm">
+                            <div class="section-banner-title">Get 10% off your first order</div>
+                            <div class="text-muted">Subscribe with your email to receive curated edits and promotions.</div>
+                        </div>
+                        <div class="stack-sm" style="min-width: 260px;">
+                            <input id="newsletter-email" class="search-input" type="email" placeholder="you@example.com" />
+                            <button class="btn" type="button" onclick="subscribeNewsletter()">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-inner">
+                <div>
+                    <div class="footer-title">Shop Fashion</div>
+                    <p class="text-muted">
+                        A simple clothing store demo built with Django and a modern storefront layout.
+                    </p>
+                </div>
+                <div>
+                    <div class="footer-title">Shop</div>
+                    <ul class="footer-links">
+                        <li><a href="#section-men">Men</a></li>
+                        <li><a href="#section-women">Women</a></li>
+                        <li><a href="#section-kids">Kids</a></li>
+                        <li><a href="#section-accessories">Accessories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-title">Help</div>
+                    <ul class="footer-links">
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="footer-title">Company</div>
+                    <ul class="footer-links">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© <span id="year"></span> Shop Fashion</span>
+                <span>Demo storefront for learning purposes</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const API_BASE = `${window.location.origin}/api`;
+
+        function checkAuthentication() {
+            const user_token = localStorage.getItem('user_token');
+            if (!user_token) {
+                window.location.replace('./user-login.html');
+                return false;
+            }
+            return true;
+        }
+
+        function updateCartCountDisplay(count) {
+            const badge = document.getElementById('cart-count');
+            if (!badge) return;
+            if (!count || count <= 0) {
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = 'flex';
+                badge.textContent = count;
+            }
+        }
+
+        async function fetchCartCount() {
+            try {
+                const res = await fetch(`${API_BASE}/cart/`, { credentials: "include" });
+                if (!res.ok) return;
+                const data = await res.json();
+                updateCartCountDisplay(data.items?.length || 0);
+            } catch {
+                // ignore cart count errors
+            }
+        }
+
+        function handleSearch() {
+            const input = document.getElementById('search-input');
+            const query = input?.value?.trim().toLowerCase();
+            if (!query) return;
+            const cards = document.querySelectorAll('[data-product-name]');
+            cards.forEach(card => {
+                const name = card.getAttribute('data-product-name')?.toLowerCase() || '';
+                const desc = card.getAttribute('data-product-description')?.toLowerCase() || '';
+                const match = name.includes(query) || desc.includes(query);
+                card.style.display = match ? '' : 'none';
+            });
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function subscribeNewsletter() {
+            const input = document.getElementById('newsletter-email');
+            if (!input) return;
+            const value = input.value.trim();
+            if (!value) {
+                alert('Please enter an email address.');
+                return;
+            }
+            alert('Thank you for subscribing!');
+            input.value = '';
+        }
+
+        function getWishlist() {
+            try {
+                const raw = localStorage.getItem('wishlist') || '[]';
+                return JSON.parse(raw);
+            } catch {
+                return [];
+            }
+        }
+
+        function setWishlist(list) {
+            localStorage.setItem('wishlist', JSON.stringify(list));
+        }
+
+        function toggleWishlist(productId) {
+            let list = getWishlist();
+            const exists = list.includes(productId);
+            list = exists ? list.filter(id => id !== productId) : [...list, productId];
+            setWishlist(list);
+            const btn = document.querySelector(`button[data-wishlist-id="${productId}"]`);
+            if (btn) {
+                btn.classList.toggle('active', !exists);
+                btn.textContent = !exists ? '♥' : '♡';
+            }
+        }
+
+        function isInWishlist(productId) {
+            return getWishlist().includes(productId);
+        }
+
+        async function loadProducts() {
+            if (!checkAuthentication()) return;
+
+            const container = document.getElementById("products");
+            try {
+                const res = await fetch(`${API_BASE}/products/`, { credentials: "include" });
+                const items = await res.json();
+
+                if (!Array.isArray(items) || items.length === 0) {
+                    container.innerHTML = '<div class="text-muted" style="grid-column: 1/-1; text-align:center; padding: 40px;">No products available yet. Check back soon.</div>';
+                    return;
+                }
+
+                container.innerHTML = "";
+                items.forEach((p) => {
+                    const card = document.createElement("article");
+                    card.className = "product-card";
+
+                    const imageUrl = p.uploaded_image_url
+                        ? `${window.location.origin}${p.uploaded_image_url}`
+                        : (p.image_url || "https://via.placeholder.com/300x200?text=No+Image");
+
+                    const inStock = p.stock > 0;
+                    const badgeStockClass = inStock ? "badge-stock" : "badge-stock out";
+                    const stockText = inStock ? `In stock (${p.stock})` : "Out of stock";
+
+                    card.setAttribute('data-product-name', p.name || '');
+                    card.setAttribute('data-product-description', p.description || '');
+
+                    const inWishlist = isInWishlist(p.id);
+
+                    card.innerHTML = `
+                        <div class="product-media">
+                            <img src="${imageUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'" />
+                            <div class="product-badges">
+                                <span class="badge ${badgeStockClass}">${stockText}</span>
+                            </div>
+                            <button class="wishlist-toggle ${inWishlist ? "active" : ""}" data-wishlist-id="${p.id}" onclick="toggleWishlist(${p.id})">
+                                ${inWishlist ? "♥" : "♡"}
+                            </button>
+                        </div>
+                        <div class="product-body">
+                            <div class="product-title">${p.name}</div>
+                            <div class="product-description">${p.description || ""}</div>
+                            <div class="product-meta-row">
+                                <div>
+                                    <span class="product-price-main">$${parseFloat(p.price).toFixed(2)}</span>
+                                </div>
+                                <div class="product-rating">★ ★ ★ ★ ☆ · 120</div>
+                            </div>
+                            <div class="product-actions">
+                                <button class="btn" type="button" onclick="addToCart(${p.id}, '${p.name.replace(/"/g, "&quot;")}')" ${inStock ? "" : "disabled"}>
+                                    ${inStock ? "Add to cart" : "Out of stock"}
+                                </button>
+                                <a class="btn btn-outline" href="./product.html?id=${p.id}">
+                                    Details
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                container.innerHTML = `<div style="grid-column: 1/-1; color: #b91c1c; text-align: center; padding: 40px;">Error loading products: ${error.message}</div>`;
+                console.error('Error:', error);
+            }
+        }
+
+        async function addToCart(productId, productName) {
+            try {
+                const res = await fetch(`${API_BASE}/cart/`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ product_id: productId, quantity: 1 }),
+                });
+                if (res.ok) {
+                    alert(`"${productName}" added to cart!`);
+                    fetchCartCount();
+                } else {
+                    alert("Error adding to cart.");
+                }
+            } catch (error) {
+                alert("Error adding to cart: " + error.message);
+            }
+        }
+
+        function redirectToAdmin() {
+            window.location.href = './admin-ui.html';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('user_token');
+                window.location.replace('./user-login.html');
+            }
+        }
+
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                checkAuthentication();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            const yearSpan = document.getElementById('year');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear().toString();
+            }
+            loadProducts();
+            fetchCartCount();
+        });
+    </script>
+</body>
+</html>
+

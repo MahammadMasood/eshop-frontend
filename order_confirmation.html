@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+    <link rel="icon" href="/static/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header-top">
+          <div class="brand">
+            <img class="logo" src="/static/logo.svg" alt="Shop Fashion" />
+            <div class="brand-mark">S</div>
+            <span>Shop Fashion</span>
+          </div>
+          <div class="main-nav">
+            <div class="nav-links">
+              <a href="./index.html" class="nav-link">Home</a>
+              <a href="./cart.html" class="nav-link">Cart</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="section">
+          <div class="section-header">
+            <div>
+              <h1 class="section-title">Order confirmed</h1>
+              <p class="section-subtitle">Thank you for your purchase! Your order is on its way.</p>
+            </div>
+          </div>
+
+          <div class="section-banner">
+            <div class="section-banner-text">
+              <div class="section-banner-title">🎉 Order received</div>
+              <p class="text-muted">We’ve sent a confirmation email and will update your delivery status soon.</p>
+              <div class="stack-sm">
+                <div><strong>Order ID:</strong> <span id="order-id">N/A</span></div>
+                <div>
+                  <strong>Status:</strong>
+                  <span class="pill" style="background: var(--color-badge-success-bg); color: var(--color-badge-success-text); padding: 3px 10px;">Placed</span>
+                </div>
+                <div><strong>Estimated delivery:</strong> <span id="delivery">TBD</span></div>
+              </div>
+            </div>
+            <div class="stack-sm" style="min-width: 200px;">
+              <a class="btn" href="./index.html">Continue shopping</a>
+              <a class="btn btn-outline" href="./cart.html">View cart</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <div>
+            <div class="footer-title">Shop Fashion</div>
+            <p class="text-muted">Thanks for shopping with us.</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© <span id="year"></span> Shop Fashion</span>
+          <span>Demo storefront</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      document.getElementById("order-id").innerText = params.get("order_id") || "N/A";
+      document.getElementById("delivery").innerText = params.get("delivery") || "TBD";
+
+      window.addEventListener("load", () => {
+        const yearSpan = document.getElementById("year");
+        if (yearSpan) {
+          yearSpan.textContent = new Date().getFullYear().toString();
+        }
+      });
+    </script>
+  </body>
+</html>
+

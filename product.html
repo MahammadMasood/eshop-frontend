@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details</title>
+    <link rel="icon" href="/static/logo.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="header-top">
+          <div class="brand">
+            <img class="logo" src="/static/logo.svg" alt="Shop Fashion" />
+            <div class="brand-mark">S</div>
+            <span>Shop Fashion</span>
+          </div>
+          <div class="main-nav">
+            <div class="nav-links">
+              <a href="./index.html" class="nav-link">Home</a>
+            </div>
+            <div class="nav-actions">
+              <button class="nav-icon-btn" onclick="window.location.href='./cart.html'">
+                <span>Cart</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container">
+        <section class="section">
+          <div id="product" class="product-detail"></div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-inner">
+          <div>
+            <div class="footer-title">Shop Fashion</div>
+            <p class="text-muted">Product details page.</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© <span id="year"></span> Shop Fashion</span>
+          <span>Demo storefront</span>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const API_BASE = `${window.location.origin}/api`;
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get("id");
+
+      function storeRecentlyViewed(id) {
+        try {
+          const raw = localStorage.getItem("recently_viewed") || "[]";
+          let arr = JSON.parse(raw);
+          arr = [id, ...arr.filter((x) => x !== id)].slice(0, 10);
+          localStorage.setItem("recently_viewed", JSON.stringify(arr));
+        } catch {
+          // ignore
+        }
+      }
+
+      async function loadProduct() {
+        if (!productId) return;
+        const res = await fetch(`${API_BASE}/products/${productId}/`, { credentials: "include" });
+        const p = await res.json();
+        const box = document.getElementById("product");
+
+        const imageUrl = p.uploaded_image_url
+          ? `${window.location.origin}${p.uploaded_image_url}`
+          : p.image_url || "https://via.placeholder.com/500x320?text=No+Image";
+
+        const inStock = p.stock > 0;
+
+        box.innerHTML = `
+          <div class="product-gallery">
+            <div class="product-main-image">
+              <img src="${imageUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/500x320?text=No+Image'">
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-info-header">
+              <div>
+                <h1 class="section-title">${p.name}</h1>
+                <div class="detail-meta">
+                  <span>★ ★ ★ ★ ☆ · 120 reviews</span>
+                  <span>${inStock ? "In stock" : "Out of stock"}</span>
+                </div>
+              </div>
+              <div class="product-price-block">
+                <div class="product-price-main-lg">$${parseFloat(p.price).toFixed(2)}</div>
+              </div>
+            </div>
+
+            <div class="stack-md">
+              <div>
+                <div class="footer-title">Description</div>
+                <p class="text-muted">${p.description || "No description available."}</p>
+              </div>
+
+              <div>
+                <div class="footer-title">Size</div>
+                <div class="pill-group">
+                  <button type="button" class="pill-option active">M</button>
+                  <button type="button" class="pill-option">L</button>
+                  <button type="button" class="pill-option">XL</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-cta-row">
+              <button class="btn" type="button" onclick="addToCart(${p.id})" ${inStock ? "" : "disabled"}>
+                ${inStock ? "Add to cart" : "Out of stock"}
+              </button>
+              <button class="btn btn-outline" type="button" onclick="window.location.href='./cart.html'">
+                Go to cart
+              </button>
+            </div>
+          </div>
+        `;
+
+        storeRecentlyViewed(p.id);
+      }
+
+      async function addToCart(id) {
+        const res = await fetch(`${API_BASE}/cart/`, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ product_id: id, quantity: 1 }),
+        });
+        if (res.ok) {
+          alert("Added to cart");
+        } else {
+          alert("Error adding to cart");
+        }
+      }
+
+      window.addEventListener("load", () => {
+        const yearSpan = document.getElementById("year");
+        if (yearSpan) {
+          yearSpan.textContent = new Date().getFullYear().toString();
+        }
+        loadProduct();
+      });
+    </script>
+  </body>
+</html>
+
