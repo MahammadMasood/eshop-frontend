@@ -67,7 +67,7 @@
 
       async function loadProduct() {
         if (!productId) return;
-        const res = await fetch(`${API_BASE}/products/${productId}/`, { credentials: "include" });
+        const res = await fetch("http://51.20.138.251:8000/products/${productId}/", { credentials: "include" });
         const p = await res.json();
         const box = document.getElementById("product");
 
@@ -128,7 +128,7 @@
       }
 
       async function addToCart(id) {
-        const res = await fetch(`${API_BASE}/cart/`, {
+        const res = await fetch("http://51.20.138.251:8000/cart/", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

@@ -80,7 +80,7 @@
 
       async function loadSummary() {
         try {
-          const res = await fetch(`${API_BASE}/cart/`, { credentials: "include" });
+          const res = await fetch("http://51.20.138.251:8000/cart/", { credentials: "include" });
           const data = await res.json();
           const summary = document.getElementById("summary-text");
           if (!data.items || data.items.length === 0) {
@@ -97,7 +97,7 @@
       async function placeOrder() {
         const name = document.getElementById("name").value;
         const email = document.getElementById("email").value;
-        const res = await fetch(`${API_BASE}/checkout/`, {
+        const res = await fetch("http://51.20.138.251:8000/checkout/", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

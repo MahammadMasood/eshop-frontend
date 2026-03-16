@@ -263,7 +263,7 @@
 
         async function fetchCartCount() {
             try {
-                const res = await fetch(`${API_BASE}/cart/`, { credentials: "include" });
+                const res = await fetch("http://51.20.138.251:8000/cart/", { credentials: "include" });
                 if (!res.ok) return;
                 const data = await res.json();
                 updateCartCountDisplay(data.items?.length || 0);
@@ -337,7 +337,7 @@
 
             const container = document.getElementById("products");
             try {
-                const res = await fetch(`${API_BASE}/products/`, { credentials: "include" });
+                const res = await fetch("http://51.20.138.251:8000/products/", { credentials: "include" });
                 const items = await res.json();
 
                 if (!Array.isArray(items) || items.length === 0) {
@@ -402,7 +402,7 @@
 
         async function addToCart(productId, productName) {
             try {
-                const res = await fetch(`${API_BASE}/cart/`, {
+                const res = await fetch("http://51.20.138.251:8000/cart/", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
