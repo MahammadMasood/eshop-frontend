@@ -290,6 +290,8 @@
                 const payload = { username, password };
                 if (email) payload.email = email;
 
+                console.log('signup request payload', payload);
+
                 const response = await fetch(`${API_BASE}/user/signup/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -298,6 +300,7 @@
 
                 const raw = await response.text();
                 console.log('signup response', response.status, raw);
+                console.log('signup response headers', Array.from(response.headers.entries()));
 
                 let data;
                 try {
