@@ -296,9 +296,17 @@
                     body: JSON.stringify(payload)
                 });
 
-                const data = await response.json();
+                const raw = await response.text();
+                console.log('signup response', response.status, raw);
 
-                if (data.success) {
+                let data;
+                try {
+                    data = raw ? JSON.parse(raw) : {};
+                } catch (err) {
+                    data = { detail: `Invalid JSON response: ${err.message}` };
+                }
+
+                if (response.ok && data.success) {
                     messageEl.classList.remove('error');
                     messageEl.classList.add('success');
                     messageEl.innerHTML = '✓ Account created! Switching to login...';
