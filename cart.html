@@ -68,10 +68,11 @@
     </div>
 
     <script>
-      const API_BASE = "http://51.20.138.251:8000/api";
+      const SERVER_BASE = "http://51.20.138.251:8000";
+      const API_BASE = `${SERVER_BASE}/api`;
 
       async function loadCart() {
-        const res = await fetch("http://51.20.138.251:8000/cart/", { credentials: "include" });
+        const res = await fetch(`${API_BASE}/cart/`, { credentials: "include" });
         const data = await res.json();
         const body = document.getElementById("cart-body");
         body.innerHTML = "";
@@ -101,7 +102,7 @@
       }
 
       async function updateQty(id, qty) {
-        await fetch("http://51.20.138.251:8000/cart/", {
+        await fetch(`${API_BASE}/cart/`, {
           method: "PATCH",
           credentials: "include",
           headers: { "Content-Type": "application/json" },
@@ -111,7 +112,7 @@
       }
 
       async function removeItem(id) {
-        await fetch("http://51.20.138.251:8000/cart/", {
+        await fetch(`${API_BASE}/cart/`, {
           method: "DELETE",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

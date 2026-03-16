@@ -50,7 +50,8 @@
     </div>
 
     <script>
-      const API_BASE = "http://51.20.138.251:8000/api";
+      const SERVER_BASE = "http://51.20.138.251:8000";
+      const API_BASE = `${SERVER_BASE}/api`;
       const params = new URLSearchParams(window.location.search);
       const productId = params.get("id");
 
@@ -67,12 +68,12 @@
 
       async function loadProduct() {
         if (!productId) return;
-        const res = await fetch("http://51.20.138.251:8000/products/${productId}/", { credentials: "include" });
+        const res = await fetch(`${API_BASE}/products/${productId}/`, { credentials: "include" });
         const p = await res.json();
         const box = document.getElementById("product");
 
         const imageUrl = p.uploaded_image_url
-          ? `${window.location.origin}${p.uploaded_image_url}`
+          ? `${SERVER_BASE}${p.uploaded_image_url}`
           : p.image_url || "https://via.placeholder.com/500x320?text=No+Image";
 
         const inStock = p.stock > 0;
@@ -128,7 +129,7 @@
       }
 
       async function addToCart(id) {
-        const res = await fetch("http://51.20.138.251:8000/cart/", {
+        const res = await fetch(`${API_BASE}/cart/`, {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json" },

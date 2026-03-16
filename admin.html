@@ -76,7 +76,8 @@
     </div>
 
     <script>
-      const API_BASE = "http://51.20.138.251:8000/api";
+      const SERVER_BASE = "http://51.20.138.251:8000";
+      const API_BASE = `${SERVER_BASE}/api`;
       const saved = localStorage.getItem("admin_token");
       if (saved) document.getElementById("token").value = saved;
 
@@ -103,7 +104,7 @@
           stock: Number(document.getElementById("product-stock").value || 0),
         };
         const method = id ? "PATCH" : "POST";
-        const url = id ? "http://51.20.138.251:8000/products/${id}/" : "http://51.20.138.251:8000/products/";
+        const url = id ? `${API_BASE}/products/${id}/` : `${API_BASE}/products/`;
         const res = await fetch(url, {
           method,
           credentials: "include",
@@ -134,7 +135,7 @@
         const form = new FormData();
         form.append("image", fileInput.files[0]);
 
-        const res = await fetch("http://51.20.138.251:8000/products/${id}/upload-image/", {
+        const res = await fetch(`${API_BASE}/products/${id}/upload-image/`, {
           method: "POST",
           credentials: "include",
           headers: { "X-Admin-Token": localStorage.getItem("admin_token") || "" },
@@ -169,7 +170,7 @@
       }
 
       async function deleteProduct(id) {
-        await fetch("http://51.20.138.251:8000/products/${id}/", {
+        await fetch(`${API_BASE}/products/${id}/`, {
           method: "DELETE",
           credentials: "include",
           headers: getHeaders(),
@@ -178,7 +179,7 @@
       }
 
       async function loadProducts() {
-        const res = await fetch("http://51.20.138.251:8000/products/", { credentials: "include" });
+        const res = await fetch(`${API_BASE}/products/`, { credentials: "include" });
         const items = await res.json();
         window.productsCache = items;
         const container = document.getElementById("product-list");
@@ -206,7 +207,7 @@
       }
 
       async function loadOrders() {
-        const res = await fetch("http://51.20.138.251:8000/orders/", {
+        const res = await fetch(`${API_BASE}/orders/`, {
           credentials: "include",
           headers: getHeaders(),
         });
@@ -227,7 +228,7 @@
       }
 
       async function loadAnalytics() {
-        const res = await fetch("http://51.20.138.251:8000/analytics/daily-orders/", {
+        const res = await fetch(`${API_BASE}/analytics/daily-orders/`, {
           credentials: "include",
           headers: getHeaders(),
         });
