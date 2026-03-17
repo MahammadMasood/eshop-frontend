@@ -353,7 +353,7 @@
 
                     const imageUrl = p.uploaded_image_url
                         ? `${SERVER_BASE}${p.uploaded_image_url}`
-                        : (p.image_url || "https://via.placeholder.com/300x200?text=No+Image");
+                        : (p.image_url || "./no-image.svg");
 
                     const inStock = p.stock > 0;
                     const badgeStockClass = inStock ? "badge-stock" : "badge-stock out";
@@ -366,7 +366,7 @@
 
                     card.innerHTML = `
                         <div class="product-media">
-                            <img src="${imageUrl}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'" />
+                            <img src="${imageUrl}" alt="${p.name}" onerror="this.src='./no-image.svg'" />
                             <div class="product-badges">
                                 <span class="badge ${badgeStockClass}">${stockText}</span>
                             </div>
