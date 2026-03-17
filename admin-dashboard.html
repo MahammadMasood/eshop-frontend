@@ -145,8 +145,9 @@
     </div>
 
     <script>
-        const SERVER_BASE = "http://51.20.138.251:8000";
-        const API_BASE = `${SERVER_BASE}/api`;
+        // Call the API on the same host/port that served this page.
+        // This avoids "Failed to fetch" caused by hardcoded IPs / localhost.
+        const API_BASE = `${window.location.origin}/api`;
 
         function getAdminToken() {
             return localStorage.getItem('admin_token');
@@ -227,7 +228,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-Admin-Token': 'changemeadmin'
+                        'X-Admin-Token': getAdminToken() || ''
                     },
                     body: JSON.stringify({ name, price, description, stock })
                 });
@@ -245,7 +246,7 @@
                 const imageResponse = await fetch(`${API_BASE}/products/${product.id}/upload-image/`, {
                     method: 'POST',
                     headers: {
-                        'X-Admin-Token': 'changemeadmin'
+                        'X-Admin-Token': getAdminToken() || ''
                     },
                     body: formData
                 });
