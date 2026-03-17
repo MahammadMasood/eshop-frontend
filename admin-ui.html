@@ -187,6 +187,20 @@
 
         updateView();
 
+        async function readJsonOrText(res) {
+            const contentType = (res.headers.get("content-type") || "").toLowerCase();
+            if (contentType.includes("application/json")) {
+                return await res.json();
+            }
+            const text = await res.text();
+            return { _nonJson: true, _text: text };
+        }
+
+        function formatNonJsonError(label, res, data) {
+            const snippet = (data?._text || "").slice(0, 200).replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+            return `${label} failed (${res.status} ${res.statusText}). Received non-JSON response. Snippet: ${snippet}`;
+        }
+
         document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('login-username').value;
@@ -200,7 +214,11 @@
                     body: JSON.stringify({ username, password })
                 });
 
-                const data = await response.json();
+                const data = await readJsonOrText(response);
+                if (data._nonJson) {
+                    messageEl.innerHTML = '<div class="error">✗ ' + formatNonJsonError("Admin login", response, data) + '</div>';
+                    return;
+                }
                 if (data.success) {
                     localStorage.setItem('admin_token', 'admin_' + data.admin_id);
                     messageEl.innerHTML = '<div class="success">✓ Login successful! Redirecting to dashboard...</div>';
@@ -242,7 +260,11 @@
                     body: JSON.stringify({ name, price, description, stock })
                 });
 
-                const product = await productResponse.json();
+                const product = await readJsonOrText(productResponse);
+                if (product._nonJson) {
+                    messageEl.innerHTML = '<div class="error">✗ ' + formatNonJsonError("Create product", productResponse, product) + '</div>';
+                    return;
+                }
                 if (!product.id) {
                     messageEl.innerHTML = '<div class="error">✗ Failed to create product</div>';
                     return;
@@ -260,7 +282,11 @@
                     body: formData
                 });
 
-                const updatedProduct = await imageResponse.json();
+                const updatedProduct = await readJsonOrText(imageResponse);
+                if (updatedProduct._nonJson) {
+                    messageEl.innerHTML = '<div class="error">✗ ' + formatNonJsonError("Upload image", imageResponse, updatedProduct) + '</div>';
+                    return;
+                }
                 if (updatedProduct.id) {
                     messageEl.innerHTML = '<div class="success">✓ Success! Product added with image. It will now display on the home page automatically!</div>';
                     document.getElementById('add-product-form').reset();
