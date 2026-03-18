@@ -76,12 +76,13 @@
     </div>
 
     <script>
-      // Use the same origin as the page so cookies/sessions work when served alongside the API.
-      // When the page is opened via file://, fall back to the previous demo host.
+      // Use the current page origin whenever possible (including deployed hosts like 51.21.197.106).
+      // Only fall back to the old demo host when the page is opened via file:// or origin is not available.
+      const BACKEND_ORIGIN = "http://51.20.138.251:8000";
       const SERVER_BASE =
-          window.location.origin && window.location.origin !== "null"
-              ? window.location.origin
-              : "http://51.20.138.251:8000";
+          (!window.location.origin || window.location.origin === "null" || window.location.protocol === "file:")
+              ? BACKEND_ORIGIN
+              : window.location.origin;
       const API_BASE = `${SERVER_BASE}/api`;
 
       async function loadSummary() {

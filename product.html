@@ -50,12 +50,13 @@
     </div>
 
     <script>
-      // Use the same origin as the page so cookies/sessions work when served alongside the API.
-      // When the page is opened via file://, fall back to the previous demo host.
+      // Use the current page origin whenever possible (including deployed hosts like 51.21.197.106).
+      // Only fall back to the old demo host when the page is opened via file:// or origin is not available.
+      const BACKEND_ORIGIN = "http://51.20.138.251:8000";
       const SERVER_BASE =
-          window.location.origin && window.location.origin !== "null"
-              ? window.location.origin
-              : "http://51.20.138.251:8000";
+          (!window.location.origin || window.location.origin === "null" || window.location.protocol === "file:")
+              ? BACKEND_ORIGIN
+              : window.location.origin;
       const API_BASE = `${SERVER_BASE}/api`;
       const params = new URLSearchParams(window.location.search);
       const productId = params.get("id");
@@ -79,7 +80,7 @@
 
         const imageUrl = (() => {
           const raw = p.uploaded_image_url || p.image_url;
-          if (!raw) return "./no-image.svg";
+          if (!raw) return `${SERVER_BASE}/no-image.svg`;
           if (/^https?:\/\//i.test(raw)) return raw;
           if (raw.startsWith("/")) return `${SERVER_BASE}${raw}`;
           return `${SERVER_BASE}/${raw}`;
@@ -90,7 +91,7 @@
         box.innerHTML = `
           <div class="product-gallery">
             <div class="product-main-image">
-              <img src="${imageUrl}" alt="${p.name}" onerror="this.src='./no-image.svg'">
+              <img src="${imageUrl}" alt="${p.name}" onerror="this.src='${SERVER_BASE}/no-image.svg'">
             </div>
           </div>
           <div class="product-info">
