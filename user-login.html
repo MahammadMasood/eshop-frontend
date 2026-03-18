@@ -196,7 +196,12 @@
     </div>
 
     <script>
-        const SERVER_BASE = "http://51.20.138.251:8000";
+        // Use the same origin as the page so cookies/sessions work when served alongside the API.
+        // When the page is opened via file://, fall back to the previous demo host.
+        const SERVER_BASE =
+            window.location.origin && window.location.origin !== "null"
+                ? window.location.origin
+                : "http://51.20.138.251:8000";
         const API_BASE = `${SERVER_BASE}/api`;
 
         function switchTab(event, tab) {
