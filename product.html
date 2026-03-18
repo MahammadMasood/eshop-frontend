@@ -80,10 +80,10 @@
 
         const imageUrl = (() => {
           const raw = p.uploaded_image_url || p.image_url;
-          if (!raw) return `${SERVER_BASE}/no-image.svg`;
+          if (!raw) return `${BACKEND_ORIGIN}/no-image.svg`;
           if (/^https?:\/\//i.test(raw)) return raw;
-          if (raw.startsWith("/")) return `${SERVER_BASE}${raw}`;
-          return `${SERVER_BASE}/${raw}`;
+          if (raw.startsWith("/")) return `${BACKEND_ORIGIN}${raw}`;
+          return `${BACKEND_ORIGIN}/${raw}`;
         })();
 
         const inStock = p.stock > 0;
