@@ -356,9 +356,13 @@
                     const card = document.createElement("article");
                     card.className = "product-card";
 
-                    const imageUrl = p.uploaded_image_url
-                        ? `${SERVER_BASE}${p.uploaded_image_url}`
-                        : (p.image_url || "./no-image.svg");
+                    const imageUrl = (() => {
+                        const raw = p.uploaded_image_url || p.image_url;
+                        if (!raw) return "./no-image.svg";
+                        if (/^https?:\/\//i.test(raw)) return raw;
+                        if (raw.startsWith("/")) return `${SERVER_BASE}${raw}`;
+                        return `${SERVER_BASE}/${raw}`;
+                    })();
 
                     const inStock = p.stock > 0;
                     const badgeStockClass = inStock ? "badge-stock" : "badge-stock out";
