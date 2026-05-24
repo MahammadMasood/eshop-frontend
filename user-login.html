@@ -203,7 +203,7 @@
             (!window.location.origin || window.location.origin === "null" || window.location.protocol === "file:")
                 ? BACKEND_ORIGIN
                 : window.location.origin;
-        const API_BASE = `${SERVER_BASE}/api`;
+        const API_BASE = `${SERVER_BASE}`;
 
         function switchTab(event, tab) {
             event.preventDefault();

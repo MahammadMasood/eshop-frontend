@@ -154,7 +154,7 @@
     <script>
         // Call the API on the same host/port that served this page.
         // This avoids "Failed to fetch" caused by hardcoded IPs / localhost.
-        const API_BASE = `${window.location.origin}/api`;
+        const API_BASE = `${window.location.origin}`;
 
         function getAdminToken() {
             return localStorage.getItem('admin_token');
