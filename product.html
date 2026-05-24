@@ -52,7 +52,7 @@
     <script>
       // Use the current page origin whenever possible (including deployed hosts like 51.21.197.106).
       // Only fall back to the old demo host when the page is opened via file:// or origin is not available.
-      const BACKEND_ORIGIN = "http://3.235.184.166:8000";
+      const BACKEND_ORIGIN = "http://10.0.1.55:8000";
       const SERVER_BASE =
           (!window.location.origin || window.location.origin === "null" || window.location.protocol === "file:")
               ? BACKEND_ORIGIN
