@@ -231,7 +231,7 @@
             messageEl.innerHTML = '⏳ Logging in...';
 
             try {
-                const response = await fetch(`${API_BASE}/api/user/login/`, {
+                const response = await fetch(`${API_BASE}/user/login/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, password })
@@ -295,7 +295,7 @@
                 const payload = { username, password };
                 if (email) payload.email = email;
 
-                const response = await fetch(`${API_BASE}/api/user/signup/`, {
+                const response = await fetch(`${API_BASE}/user/signup/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
