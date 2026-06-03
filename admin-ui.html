@@ -251,7 +251,7 @@
                 messageEl.innerHTML = '<div class="success">⏳ Uploading product with image...</div>';
 
                 // Create product first
-                const productResponse = await fetch(`${API_BASE}/products/`, {
+                const productResponse = await fetch(`${API_BASE}/api/products/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -274,7 +274,7 @@
                 const formData = new FormData();
                 formData.append('image', image);
 
-                const imageResponse = await fetch(`${API_BASE}/products/${product.id}/upload-image/`, {
+                const imageResponse = await fetch(`${API_BASE}/api/products/${product.id}/upload-image/`, {
                     method: 'POST',
                     headers: {
                         'X-Admin-Token': getAdminToken() || ''
