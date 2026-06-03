@@ -110,7 +110,7 @@
           stock: Number(document.getElementById("product-stock").value || 0),
         };
         const method = id ? "PATCH" : "POST";
-        const url = id ? `${API_BASE}/products/${id}/` : `${API_BASE}/products/`;
+        const url = id ? `${API_BASE}/api/products/${id}/` : `${API_BASE}/api/products/`;
         const res = await fetch(url, {
           method,
           credentials: "include",
@@ -141,7 +141,7 @@
         const form = new FormData();
         form.append("image", fileInput.files[0]);
 
-        const res = await fetch(`${API_BASE}/products/${id}/upload-image/`, {
+        const res = await fetch(`${API_BASE}/api/products/${id}/upload-image/`, {
           method: "POST",
           credentials: "include",
           headers: { "X-Admin-Token": localStorage.getItem("admin_token") || "" },
@@ -176,7 +176,7 @@
       }
 
       async function deleteProduct(id) {
-        await fetch(`${API_BASE}/products/${id}/`, {
+        await fetch(`${API_BASE}/api/products/${id}/`, {
           method: "DELETE",
           credentials: "include",
           headers: getHeaders(),
@@ -185,7 +185,7 @@
       }
 
       async function loadProducts() {
-        const res = await fetch(`${API_BASE}/products/`, { credentials: "include" });
+        const res = await fetch(`${API_BASE}/api/products/`, { credentials: "include" });
         const items = await res.json();
         window.productsCache = items;
         const container = document.getElementById("product-list");
@@ -213,7 +213,7 @@
       }
 
       async function loadOrders() {
-        const res = await fetch(`${API_BASE}/orders/`, {
+        const res = await fetch(`${API_BASE}/api/orders/`, {
           credentials: "include",
           headers: getHeaders(),
         });
@@ -234,7 +234,7 @@
       }
 
       async function loadAnalytics() {
-        const res = await fetch(`${API_BASE}/analytics/daily-orders/`, {
+        const res = await fetch(`${API_BASE}/api/analytics/daily-orders/`, {
           credentials: "include",
           headers: getHeaders(),
         });
