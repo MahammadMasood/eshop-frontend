@@ -163,11 +163,24 @@
             document.getElementById('dashboard-section').classList.remove('hidden');
         }
 
-        function updateView() {
-            if (getAdminToken()) {
-                showDashboard();
-            } else {
-                showLoginSection();
+        async function updateView() {
+            showLoginSection();
+            const token = getAdminToken();
+            if (!token) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/session/`, {
+                    headers: { 'X-Admin-Token': token },
+                });
+                if (response.ok) {
+                    showDashboard();
+                } else {
+                    localStorage.removeItem('admin_token');
+                }
+            } catch {
+                localStorage.removeItem('admin_token');
             }
         }
 

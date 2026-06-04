@@ -239,6 +239,7 @@
                 const data = await response.json();
 
                 if (data.success) {
+                    localStorage.removeItem('admin_token');
                     localStorage.setItem('user_token', 'user_' + data.user_id);
                     messageEl.classList.remove('error');
                     messageEl.classList.add('success');

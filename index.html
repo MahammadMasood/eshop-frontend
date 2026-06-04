@@ -432,6 +432,7 @@
         }
 
         function redirectToAdmin() {
+            // Admin uses a separate login; never reuse the shopper session.
             window.location.href = './admin-ui.html';
         }
 
